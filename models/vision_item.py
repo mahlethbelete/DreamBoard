@@ -1,12 +1,13 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, String, func
+from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
+from models.mixins import TimestampMixin
 
 
-class VisionItem(Base):
+class VisionItem(Base, TimestampMixin):
     __tablename__ = "vision_items"
 
     id: Mapped[int] = mapped_column(
@@ -40,7 +41,7 @@ class VisionItem(Base):
     )
 
     target_date: Mapped[datetime | None] = mapped_column(
-        DateTime,
+        DateTime(timezone=True),
         nullable=True
     )
 
@@ -48,11 +49,6 @@ class VisionItem(Base):
         String,
         nullable=False,
         default="not_started"
-    )
-
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        server_default=func.now()
     )
 
     user = relationship("User", back_populates="vision_items")

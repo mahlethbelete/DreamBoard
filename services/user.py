@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from core.security import hash_password
+from core.security import hash_password, verify_password
 from models.user import User
 from schemas.user import UserCreate
 from repositories.user import (
@@ -21,6 +21,15 @@ def create_user_service(db: Session, user: UserCreate):
     )
 
     return create_user(db, new_user)
+
+
+def authenticate_user_service(db: Session, email: str, password: str):
+    user = get_user_by_email(db, email)
+
+    if not user or not verify_password(password, user.password):
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+
+    return user
 
 
 def get_user_by_id_service(db: Session, user_id: int):

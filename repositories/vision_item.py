@@ -31,3 +31,18 @@ def get_vision_items_by_category(db: Session, category_id: int):
 
 def get_vision_items(db: Session):
     return db.query(VisionItem).all()
+
+
+def update_vision_item(db: Session, vision_item: VisionItem, data: dict):
+    for field, value in data.items():
+        setattr(vision_item, field, value)
+
+    db.commit()
+    db.refresh(vision_item)
+
+    return vision_item
+
+
+def delete_vision_item(db: Session, vision_item: VisionItem):
+    db.delete(vision_item)
+    db.commit()
