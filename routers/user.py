@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from database import get_db
 from schemas.user import UserCreate, UserResponse
 from services.user import create_user_service, get_user_by_id_service, get_users_service
+from core.dependency import get_current_user
+from models.user import User
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -14,10 +16,16 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: int, db: Session = Depends(get_db)):
+def get_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     return get_user_by_id_service(db, user_id)
 
 
 @router.get("/", response_model=list[UserResponse])
-def get_users(db: Session = Depends(get_db)):
+def get_users(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
     return get_users_service(db)

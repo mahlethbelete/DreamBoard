@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
+from models.vision_item import VisionStatus
 
 
 class VisionItemCreate(BaseModel):
@@ -9,7 +10,7 @@ class VisionItemCreate(BaseModel):
     image_url: str | None = None
     target_date: datetime | None = None
     category_id: int
-    status: str = "not_started"
+    status: VisionStatus = VisionStatus.not_started
 
 
 class VisionItemUpdate(BaseModel):
@@ -18,7 +19,7 @@ class VisionItemUpdate(BaseModel):
     image_url: str | None = None
     target_date: datetime | None = None
     category_id: int | None = None
-    status: str | None = None
+    status: VisionStatus | None = None
 
 
 class VisionItemResponse(BaseModel):
