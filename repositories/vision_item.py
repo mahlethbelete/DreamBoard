@@ -12,25 +12,29 @@ def create_vision_item(db: Session, vision_item: VisionItem):
 
 
 def get_vision_item_by_id(db: Session, vision_item_id: int):
-    return db.query(VisionItem).filter(
-        VisionItem.id == vision_item_id
-    ).first()
+    return db.query(VisionItem).filter(VisionItem.id == vision_item_id).first()
 
 
 def get_vision_items_by_user(db: Session, user_id: int):
-    return db.query(VisionItem).filter(
-        VisionItem.user_id == user_id
-    ).all()
+    return (
+        db.query(VisionItem)
+        .filter(VisionItem.user_id == user_id)
+        .order_by(VisionItem.created_at.desc())
+        .all()
+    )
 
 
 def get_vision_items_by_category(db: Session, category_id: int):
-    return db.query(VisionItem).filter(
-        VisionItem.category_id == category_id
-    ).all()
+    return (
+        db.query(VisionItem)
+        .filter(VisionItem.category_id == category_id)
+        .order_by(VisionItem.created_at.desc())
+        .all()
+    )
 
 
 def get_vision_items(db: Session):
-    return db.query(VisionItem).all()
+    return db.query(VisionItem).order_by(VisionItem.created_at.desc()).all()
 
 
 def update_vision_item(db: Session, vision_item: VisionItem, data: dict):

@@ -24,7 +24,12 @@ def get_category_by_name(db: Session, user_id: int, name: str):
 
 
 def get_categories_by_user(db: Session, user_id: int):
-    return db.query(Category).filter(Category.user_id == user_id).all()
+    return (
+        db.query(Category)
+        .filter(Category.user_id == user_id)
+        .order_by(Category.created_at)
+        .all()
+    )
 
 
 def update_category(db: Session, category: Category, data: dict):

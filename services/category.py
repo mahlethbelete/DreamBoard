@@ -17,7 +17,7 @@ def create_category_service(db: Session, category: CategoryCreate, user_id: int)
     if get_category_by_name(db, user_id, category.name):
         raise HTTPException(status_code=409, detail="Category already exists")
 
-    new_category = Category(user_id=user_id, name=category.name)
+    new_category = Category(user_id=user_id, name=category.name, color=category.color)
 
     return create_category(db, new_category)
 
@@ -43,12 +43,14 @@ def update_category_service(
 ):
     category = get_owned_category(db, category_id, user_id)
 
-    existing = get_category_by_name(db, user_id, data.name)
+    changes = data.model_dump(exclude_unset=True)
 
-    if existing and existing.id != category_id:
-        raise HTTPException(status_code=409, detail="Category already exists")
+    if "name" in changes:
+        existing = get_category_by_name(db, user_id, changes["name"])
+        if existing and existing.id != category_id:
+            raise HTTPException(status_code=409, detail="Category already exists")
 
-    return update_category(db, category, data.model_dump(exclude_unset=True))
+    return update_category(db, category, changes)
 
 
 def delete_category_service(db: Session, category_id: int, user_id: int):

@@ -20,10 +20,10 @@ class VisionItem(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
 
     category_id: Mapped[int] = mapped_column(
-        ForeignKey("categories.id"), nullable=False
+        ForeignKey("categories.id"), nullable=False, index=True
     )
 
     title: Mapped[str] = mapped_column(String, nullable=False)
