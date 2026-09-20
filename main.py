@@ -8,6 +8,7 @@ from routers.category import router as category_router
 from routers.vision_item import router as vision_item_router
 from routers.upload import router as upload_router
 from routers.ai import router as ai_router
+from routers.images import router as images_router
 
 from database import Base, engine
 
@@ -38,4 +39,5 @@ app.include_router(category_router)
 app.include_router(vision_item_router)
 app.include_router(upload_router)
 app.include_router(ai_router)
+app.include_router(images_router)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
