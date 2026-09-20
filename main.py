@@ -17,13 +17,15 @@ from models.vision_item import VisionItem
 
 import os
 
+
+
 os.makedirs("uploads", exist_ok=True)
 
 app = FastAPI(title="DreamBoard API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

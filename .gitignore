@@ -4,3 +4,6 @@ __pycache__/
 env/
 .envuploads/
 uploads/
+.neon
+.env
+.neon
